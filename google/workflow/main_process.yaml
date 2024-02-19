@@ -1,0 +1,42 @@
+main:
+    params: [args]
+    steps:
+    - confirm_by_manager_a:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+        args:
+            workflow_id: sys_confirmation_by_role
+            argument: 
+                role_id: "manager_a"
+                document_id: '${args.document_id}'
+        result: manager_a_result
+    - if_manager_a_result:
+        switch:
+            - condition: ${manager_a_result.body.status == "APPROVED"}
+              next: confirm_by_manager_b
+        next: rejected
+    - confirm_by_manager_b:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+        args:
+            workflow_id: sys_confirmation_by_role
+            argument: 
+                role_id: "manager_b"
+                document_id: '${args.document_id}'
+        result: manager_b_result
+    - if_manager_b_result:
+        switch:
+            - condition: ${manager_b_result.body.status == "APPROVED"}
+              next: close
+        next: rejected
+
+    - rejected:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+        args:
+            workflow_id: sys_reject_process
+            
+    - close:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+        args:
+            workflow_id: sys_close_process
+            argument:
+                document_id: '${args.document_id}'
+    

@@ -1,0 +1,51 @@
+main:
+    params: [args]
+    steps:
+    - init_supabase:
+        call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
+        args:
+            workflow_id: init_supabase
+        result: supabase_context
+    - print_params:
+        call: sys.log
+        args:
+            severity: "INFO"
+            text: ${"Received role id " + args.role_id}
+    - create_callback:
+        call: events.create_callback_endpoint
+        args:
+            http_callback_method: "POST"
+        result: callback_details
+    - print_callback_details:
+        call: sys.log
+        args:
+            severity: "INFO"
+            text: ${"Listening for callbacks on " + callback_details.url}
+    - saveCallbackUrl:
+        call: http.post
+        args:
+            url: ${supabase_context.supabase_url + "workflow_callback_by_role"}
+            headers:
+                Content-Type: "application/json"
+                Authorization: ${"Bearer " + supabase_context.supabase_key}
+            body:
+                {
+                    "type": "ConfirmationByRole",
+                    "callbackUrl": "${callback_details.url}",
+                    "roleId": "${args.role_id}",
+                    "documentId": "${args.document_id}"
+                }
+        result: apiResponse
+    - await_callback:
+        call: events.await_callback
+        args:
+            callback: ${callback_details}
+            timeout: 43200
+        result: callback_request
+    - print_callback_request:
+        call: sys.log
+        args:
+            severity: "INFO"
+            text: ${"Received " + json.encode_to_string(callback_request.http_request)}
+    - return_callback_result:
+        return: ${callback_request.http_request}

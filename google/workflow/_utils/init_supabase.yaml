@@ -1,0 +1,23 @@
+main:
+    steps:
+    - init:
+        assign:
+            - project_id: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+            - supabase_key: ""
+            - supabase_url: ""
+    - get_supabase_token:
+        call: googleapis.secretmanager.v1.projects.secrets.versions.accessString
+        args:
+            secret_id: "SUPABASE_ANON_KEY"
+            project_id: ${project_id}
+        result: supabase_key
+    - get_supabase_url:
+        call: googleapis.secretmanager.v1.projects.secrets.versions.accessString
+        args:
+            secret_id: "SUPABASE_URL"
+            project_id: ${project_id}
+        result: supabase_url
+    - return_data:
+        return: 
+          supabase_url: ${supabase_url}
+          supabase_key: ${supabase_key}
