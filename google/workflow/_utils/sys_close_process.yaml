@@ -1,5 +1,5 @@
 main:
-    params: []
+    params: [args]
     steps:
     - init_supabase:
         call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
@@ -30,5 +30,6 @@ main:
                     "locationId": "${locationId}",
                     "workflowId": "${workflowId}",
                     "executionId": "${executionId}",
+                    "documentId": "${args.document_id}"
                 }
         result: apiResponse

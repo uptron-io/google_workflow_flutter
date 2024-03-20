@@ -3,8 +3,7 @@ create table "public"."tracker" (
     "createdAt" timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
     "callbackUrl" text,
     "executionId" text not null,
-    "locationId" text not null,
-    "projectId" text not null,
+    "documentId" text not null,
     "metadata" json,
     "type" text not null,
     "roleId" text

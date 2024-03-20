@@ -32,6 +32,7 @@ main:
         call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run
         args:
             workflow_id: sys_reject_process
+            argurment: '${args.document_id}'
             
     - close:
         call: googleapis.workflowexecutions.v1.projects.locations.workflows.executions.run

@@ -1,0 +1,12 @@
+{
+    "imports": {
+      "deno_server": "https://deno.land/std@0.168.0/http/server.ts",
+      "deno_mod": "https://deno.land/std@0.196.0/assert/mod.ts",
+      "supabase": "https://esm.sh/@supabase/supabase-js@2.31.0",
+      "xml_parcer": "https://deno.land/x/xmlparser@v0.2.0/mod.ts",
+      "date_parser": "https://deno.land/std@0.197.0/datetime/mod.ts",
+      "retry": "https://deno.land/std@0.168.0/async/retry.ts",
+      "workflow": "https://googleapis.deno.dev/v1/workflows:v1.ts",
+      "workflowexecution": "https://googleapis.deno.dev/v1/workflowexecutions:v1.ts"
+    }
+  }

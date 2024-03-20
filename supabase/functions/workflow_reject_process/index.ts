@@ -3,10 +3,14 @@ import { Tracker, addToTracker, jsonResponse } from "../_utils/service.ts";
 Deno.serve(async (req) => {
   try {
     // Parse JSON data from the request body
-    const model = await req.json();
+    const model = await req.json();    
 
     const { executionId, documentId } =
       model;
+
+    console.log('model', model)
+    console.log('executionId', executionId)
+    console.log('documentId', documentId)
 
     // Create a Tracker instance
     const tracker = new Tracker(

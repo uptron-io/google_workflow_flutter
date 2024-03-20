@@ -1,8 +1,15 @@
+import { serve } from "deno_server";
 import { Tracker, addToTracker, jsonResponse } from "../_utils/service.ts";
 
-Deno.serve(async (req) => {
+serve(async (req) => {
   try {
-    const { type, callbackUrl, roleId, documentId } = await req.json();
+    // const { type, callbackUrl, roleId, documentId } = await req.json();
+    const body = await req.json();
+    console.log(body)
+    const { type, callbackUrl, documentId, roleId } = body;
+    console.log(!type)
+    console.log(!callbackUrl)
+    
 
     // Check if required fields are present
     if (!type || !callbackUrl) {
@@ -22,11 +29,12 @@ Deno.serve(async (req) => {
       callbackUrl,
       roleId,
     );
-
+    console.log("env", Deno.env.get("SUPABASE_URL"))
     // Save the Tracker instance
     const { error } = await addToTracker(tracker);
 
     if (error) {
+      console.log('Попало вот сюда: ' + error)
       return jsonResponse(error.message, 400);
     }
 

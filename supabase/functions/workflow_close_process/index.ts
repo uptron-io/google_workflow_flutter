@@ -6,6 +6,9 @@ Deno.serve(async (req) => {
     const model = await req.json();
 
     const { executionId, documentId } = model;
+    console.log('model', model)
+    console.log('executionId', executionId);
+    console.log('documentId', documentId);
 
     // Create a Tracker instance
     const tracker = new Tracker(
@@ -18,6 +21,7 @@ Deno.serve(async (req) => {
     const { error } = await addToTracker(tracker);
 
     if (error) {
+      console.log('Ошибка', error.message);
       return jsonResponse(error.message, 400);
     }
 
