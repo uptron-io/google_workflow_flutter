@@ -55,14 +55,17 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    _subscription = widget.supabase
+  RealtimeChannel setSubscription() {
+    return widget.supabase
         .channel('public:tracker')
         .onPostgresChanges(
             event: PostgresChangeEvent.all,
             schema: 'public',
             table: 'tracker',
+            filter: PostgresChangeFilter(
+                type: PostgresChangeFilterType.eq,
+                column: 'documentId',
+                value: _documentId),
             callback: (PostgresChangePayload payload) {
               final Map<String, dynamic> newRecord = payload.newRecord;
               setState(() {
@@ -70,6 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             })
         .subscribe();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _subscription = setSubscription();
 
     super.didChangeDependencies();
   }
@@ -90,6 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _documentId = documentId;
     });
+
+    _subscription = setSubscription();
   }
 
   Future<void> _runWorkflow() async {
@@ -109,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your App Title'),
+        title: const Text('Document Management System'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,11 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
               itemCount: _trackerData.length,
               itemBuilder: (context, index) {
                 final change = _trackerData[index];
-                // Преобразуйте объект Map в строку
                 final changeAsString = change.toString();
-                // Возвращаем ListTile с строковым представлением изменения
                 return ListTile(
-                  title: Text('Change ${index + 1}'),
+                  title: Text('Record ${index + 1}'),
                   subtitle: Text('Data: $changeAsString'),
                 );
               },
