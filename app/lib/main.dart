@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,11 +26,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Document Management System',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(supabase: Supabase.instance.client),
     );
   }
@@ -122,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Document Management System'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(
             child: Column(
@@ -139,25 +139,25 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FloatingActionButton(
                 onPressed: _createDocument,
                 tooltip: 'Create',
-                child: const Icon(Icons.add),
+                child: const Icon(Icons.add_circle_rounded),
               ),
               const SizedBox(width: 10),
               FloatingActionButton(
                 onPressed: _runWorkflow,
                 tooltip: 'Run Workflow',
-                child: const Icon(Icons.run_circle),
+                child: const Icon(Icons.play_circle_fill_rounded),
               ),
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: const EdgeInsets.all(20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
@@ -165,6 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
                   ),
                   child: const Text("Approve"),
                 ),
@@ -175,6 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
                   ),
                   child: const Text("Reject"),
                 ),
