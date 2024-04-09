@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     const { error } = await addToTracker(tracker);
 
     if (error) {
-      console.log('Ошибка', error.message);
+      console.log('Error', error.message);
       return jsonResponse(error.message, 400);
     }
 

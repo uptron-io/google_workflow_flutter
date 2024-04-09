@@ -5,8 +5,7 @@ Deno.serve(async (req) => {
     // Parse JSON data from the request body
     const model = await req.json();    
 
-    const { executionId, documentId } =
-      model;
+    const { executionId, documentId } = model;
 
     console.log('model', model)
     console.log('executionId', executionId)
